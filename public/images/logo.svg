@@ -1,11 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
   <defs>
-    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bglogo" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#1e3a8a"/>
-      <stop offset="100%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
     </linearGradient>
+    <radialGradient id="glowlogo" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowlogo" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4.8" stdDeviation="4.319999999999999" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect width="240" height="240" rx="40" fill="url(#lg)"/>
-  <text x="50%" y="46%" font-size="90" text-anchor="middle" dominant-baseline="middle">🖨️</text>
-  <text x="50%" y="80%" font-size="34" font-family="Arial, sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">القبس</text>
+  <rect width="240" height="240" rx="10.799999999999999" fill="url(#bglogo)"/>
+  <circle cx="120" cy="110.4" r="81.60000000000001" fill="url(#glowlogo)"/>
+  <g filter="url(#shadowlogo)">
+    
+  <g transform="translate(0,6)">
+    <rect x="-70" y="-8" width="140" height="52" rx="12" fill="#ffffff"/>
+    <rect x="-56" y="-40" width="112" height="34" rx="8" fill="#ffffff" opacity="0.92"/>
+    <path d="M 30 -70 L -6 -6 L 14 -6 L -2 40 L 46 -18 L 22 -18 Z" fill="#f97316"/>
+  </g>
+  </g>
 </svg>
