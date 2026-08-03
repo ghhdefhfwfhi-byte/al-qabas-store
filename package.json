@@ -1,0 +1,13 @@
+{
+  "name": "al-qabas-store",
+  "version": "1.0.0",
+  "description": "متجر القبس - متجر إلكتروني للطابعات ومستلزماتها (Storefront + Admin Panel)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

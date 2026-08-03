@@ -1,0 +1,109 @@
+{
+  "settings": {
+    "storeName": "القبس",
+    "storeNameEn": "Al-Qabas Store",
+    "phone": "07701234567",
+    "address": "بغداد - الكرادة داخل - مقابل محطة وقود",
+    "about": "متجر القبس لبيع الطابعات ومستلزماتها بأفضل الأسعار وأعلى جودة، توصيل سريع لجميع مناطق العراق.",
+    "shippingSmall": 3000,
+    "shippingMedium": 5000,
+    "shippingLarge": 8000,
+    "deliveryTimeLabel": "خلال 24 ساعة",
+    "currency": "د.ع"
+  },
+  "admin": {
+    "username": "admin",
+    "password": "qabas2026"
+  },
+  "brands": [
+    { "id": 1, "name": "HP", "logo": "/images/brands/hp.svg", "order": 1 },
+    { "id": 2, "name": "Canon", "logo": "/images/brands/canon.svg", "order": 2 },
+    { "id": 3, "name": "Epson", "logo": "/images/brands/epson.svg", "order": 3 },
+    { "id": 4, "name": "Brother", "logo": "/images/brands/brother.svg", "order": 4 },
+    { "id": 5, "name": "Xerox", "logo": "/images/brands/xerox.svg", "order": 5 },
+    { "id": 6, "name": "Samsung", "logo": "/images/brands/samsung.svg", "order": 6 }
+  ],
+  "categories": [
+    { "id": 1, "name": "طابعات ليزر", "icon": "🖨️", "order": 1 },
+    { "id": 2, "name": "طابعات نافثة للحبر", "icon": "🖨️", "order": 2 },
+    { "id": 3, "name": "طابعات صور", "icon": "🖼️", "order": 3 },
+    { "id": 4, "name": "أحبار وتونر", "icon": "🧴", "order": 4 },
+    { "id": 5, "name": "رؤوس طباعة", "icon": "🔧", "order": 5 },
+    { "id": 6, "name": "ورق طباعة", "icon": "📄", "order": 6 },
+    { "id": 7, "name": "سكانر", "icon": "📠", "order": 7 },
+    { "id": 8, "name": "ملحقات وقطع غيار", "icon": "🔌", "order": 8 }
+  ],
+  "banners": [
+    {
+      "id": 1,
+      "type": "Slider",
+      "title": "عروض الموسم على الطابعات",
+      "subtitle": "خصم يصل إلى 20% + قسّطها شهرياً",
+      "image": "/images/banners/banner-1.svg",
+      "link": "",
+      "order": 1,
+      "active": true
+    },
+    {
+      "id": 2,
+      "type": "Slider",
+      "title": "أحبار أصلية بأفضل الأسعار",
+      "subtitle": "لجميع الماركات العالمية",
+      "image": "/images/banners/banner-2.svg",
+      "link": "",
+      "order": 2,
+      "active": true
+    },
+    {
+      "id": 3,
+      "type": "Single",
+      "title": "توصيل سريع خلال 24 ساعة",
+      "subtitle": "لكل مناطق العراق",
+      "image": "/images/banners/banner-3.svg",
+      "link": "",
+      "order": 3,
+      "active": true
+    }
+  ],
+  "products": [
+    { "id": 101, "name": "طابعة HP LaserJet Pro M404dn", "categoryId": 1, "brandId": 1, "price": 285000, "discountPrice": null, "image": "/images/products/laser-1.svg", "description": "طابعة ليزر أحادية اللون، سرعة طباعة عالية، مثالية للمكاتب والاستخدام المكثف.", "stock": 12, "active": true },
+    { "id": 102, "name": "طابعة Canon i-SENSYS LBP2900", "categoryId": 1, "brandId": 2, "price": 165000, "discountPrice": 149000, "image": "/images/products/laser-2.svg", "description": "طابعة ليزر اقتصادية للاستخدام المنزلي والمكتبي الخفيف.", "stock": 8, "active": true },
+    { "id": 103, "name": "طابعة Brother HL-L2321D", "categoryId": 1, "brandId": 4, "price": 195000, "discountPrice": null, "image": "/images/products/laser-3.svg", "description": "طباعة تلقائية على الوجهين، توفير في استهلاك التونر.", "stock": 10, "active": true },
+    { "id": 104, "name": "طابعة HP DeskJet 2723 (All-in-One)", "categoryId": 2, "brandId": 1, "price": 85000, "discountPrice": null, "image": "/images/products/inkjet-1.svg", "description": "طباعة، سكانر، وناسخة في جهاز واحد، دعم الطباعة عبر الجوال.", "stock": 15, "active": true },
+    { "id": 105, "name": "طابعة Canon PIXMA G3420", "categoryId": 2, "brandId": 2, "price": 145000, "discountPrice": 135000, "image": "/images/products/inkjet-2.svg", "description": "نظام خزان حبر متكامل، تكلفة طباعة منخفضة جداً، دعم WiFi.", "stock": 9, "active": true },
+    { "id": 106, "name": "طابعة Epson EcoTank L3250", "categoryId": 2, "brandId": 3, "price": 175000, "discountPrice": null, "image": "/images/products/inkjet-3.svg", "description": "طابعة خزان حبر بدعم الطباعة اللاسلكية من الجوال مباشرة.", "stock": 11, "active": true },
+    { "id": 107, "name": "طابعة صور Canon SELPHY CP1500", "categoryId": 3, "brandId": 2, "price": 195000, "discountPrice": null, "image": "/images/products/photo-1.svg", "description": "طابعة صور فورية مقاس 4×6، جودة طباعة احترافية.", "stock": 6, "active": true },
+    { "id": 108, "name": "طابعة صور HP Sprocket", "categoryId": 3, "brandId": 1, "price": 95000, "discountPrice": null, "image": "/images/products/photo-2.svg", "description": "طابعة صور محمولة صغيرة الحجم، تعمل عبر البلوتوث.", "stock": 14, "active": true },
+    { "id": 109, "name": "حبر HP 680 أسود", "categoryId": 4, "brandId": 1, "price": 18000, "discountPrice": null, "image": "/images/products/ink-1.svg", "description": "خرطوشة حبر أصلية أسود، متوافقة مع طابعات HP DeskJet.", "stock": 40, "active": true },
+    { "id": 110, "name": "حبر Canon 728 ملون", "categoryId": 4, "brandId": 2, "price": 22000, "discountPrice": null, "image": "/images/products/ink-2.svg", "description": "خرطوشة حبر ملون أصلية لطابعات Canon المكتبية.", "stock": 35, "active": true },
+    { "id": 111, "name": "تونر Brother TN-2380", "categoryId": 4, "brandId": 4, "price": 45000, "discountPrice": 39000, "image": "/images/products/toner-1.svg", "description": "تونر أصلي بسعة طباعة تصل إلى 2600 صفحة.", "stock": 20, "active": true },
+    { "id": 112, "name": "زجاجة حبر Epson 003 أسود", "categoryId": 4, "brandId": 3, "price": 9000, "discountPrice": null, "image": "/images/products/ink-3.svg", "description": "زجاجة حبر أصلية لطابعات Epson EcoTank.", "stock": 50, "active": true },
+    { "id": 113, "name": "رأس طباعة Epson L3250", "categoryId": 5, "brandId": 3, "price": 65000, "discountPrice": null, "image": "/images/products/head-1.svg", "description": "رأس طباعة أصلي بديل، يعيد جودة الطباعة لوضعها الأمثل.", "stock": 7, "active": true },
+    { "id": 114, "name": "ورق طباعة Double A مقاس A4 (500 ورقة)", "categoryId": 6, "brandId": null, "price": 7000, "discountPrice": null, "image": "/images/products/paper-1.svg", "description": "ريم ورق طباعة أبيض فاخر 80 غم، مقاس A4.", "stock": 100, "active": true },
+    { "id": 115, "name": "سكانر Canon LiDE 300", "categoryId": 7, "brandId": 2, "price": 85000, "discountPrice": null, "image": "/images/products/scanner-1.svg", "description": "ماسح ضوئي مسطح بدقة عالية، تصميم رفيع وأنيق.", "stock": 5, "active": true },
+    { "id": 116, "name": "كيبل USB للطابعة", "categoryId": 8, "brandId": null, "price": 5000, "discountPrice": null, "image": "/images/products/cable-1.svg", "description": "كيبل توصيل USB متوافق مع أغلب أنواع الطابعات.", "stock": 60, "active": true }
+  ],
+  "orders": [
+    {
+      "id": 1001,
+      "customerName": "أحمد كريم",
+      "phone": "07709876543",
+      "address": "بغداد / الكرادة",
+      "items": [
+        { "productId": 104, "name": "طابعة HP DeskJet 2723 (All-in-One)", "price": 85000, "qty": 1 },
+        { "productId": 109, "name": "حبر HP 680 أسود", "price": 18000, "qty": 2 }
+      ],
+      "shipping": 5000,
+      "total": 126000,
+      "status": "Packaging",
+      "date": "2026-08-02T10:30:00.000Z"
+    }
+  ],
+  "notifications": [
+    { "id": 1, "title": "🎉 القبس صار عندنا تقسيط شهري!", "message": "قسّط طابعتك المفضلة على أشهر بأسعار مناسبة.", "date": "2026-08-01T12:00:00.000Z" },
+    { "id": 2, "title": "خصم 15% على الأحبار الأصلية", "message": "لفترة محدودة على جميع ماركات الأحبار.", "date": "2026-07-28T09:00:00.000Z" }
+  ],
+  "customers": [
+    { "id": 1, "name": "أحمد كريم", "phone": "07709876543", "ordersCount": 1, "joined": "2026-06-15T00:00:00.000Z" }
+  ]
+}
