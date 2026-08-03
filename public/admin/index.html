@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة تحكم القبس</title>
+<link rel="icon" href="/images/logo.svg" />
+<link rel="stylesheet" href="/admin/css/admin.css" />
+</head>
+<body>
+
+<!-- login -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <img src="/images/logo.svg" alt="القبس" />
+    <h2>تسجيل الدخول للإدارة</h2>
+    <div class="login-error" id="login-error">بيانات الدخول غير صحيحة</div>
+    <input type="text" id="login-username" placeholder="اسم المستخدم" />
+    <input type="password" id="login-password" placeholder="كلمة المرور" />
+    <button id="login-btn">دخول</button>
+    <div class="hint">admin / qabas2026 (بيانات تجريبية)</div>
+  </div>
+</div>
+
+<!-- shell -->
+<div id="admin-shell">
+  <div class="admin-header">
+    <div class="brand"><img src="/images/logo.svg" alt="" /> لوحة تحكم القبس</div>
+    <a class="logout" id="logout-btn" href="#">تسجيل الخروج</a>
+  </div>
+  <div class="admin-tabs" id="admin-tabs"></div>
+  <div class="admin-body" id="admin-body"></div>
+</div>
+
+<!-- modal -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<script src="/admin/js/admin.js"></script>
+</body>
+</html>
