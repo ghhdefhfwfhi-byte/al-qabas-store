@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>القبس | سلة المشتريات</title>
+<link rel="icon" href="/images/logo.svg" />
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container">
+  <div class="section-head" style="margin-top:20px;">
+    <h2>سلة المشتريات</h2>
+  </div>
+
+  <div class="cart-page" id="cart-page">
+    <div id="cart-items"></div>
+
+    <div class="summary-box">
+      <h3>ملخص الطلب</h3>
+      <div class="summary-row"><span>المجموع الفرعي</span><span id="subtotal">0 د.ع</span></div>
+      <div class="summary-row"><span>التوصيل</span><span id="shipping-fee">—</span></div>
+      <div class="summary-row total"><span>الإجمالي</span><span id="grand-total">0 د.ع</span></div>
+
+      <form id="checkout-form">
+        <div class="form-field">
+          <label>الاسم الكامل</label>
+          <input type="text" id="c-name" required />
+        </div>
+        <div class="form-field">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="c-phone" required />
+        </div>
+        <div class="form-field">
+          <label>العنوان التفصيلي</label>
+          <textarea id="c-address" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="checkout-btn">تأكيد الطلب ✅</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/common.js"></script>
+<script src="/js/cart.js"></script>
+</body>
+</html>
