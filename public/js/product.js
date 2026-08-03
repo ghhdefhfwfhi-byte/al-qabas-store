@@ -58,9 +58,13 @@ async function loadProduct() {
     const el = document.getElementById("qty-input");
     el.value = Number(el.value) + 1;
   };
-  document.getElementById("add-btn").onclick = () => {
+  document.getElementById("add-btn").onclick = (e) => {
     const qty = Number(document.getElementById("qty-input").value) || 1;
     addToCart(product, qty);
+    const btn = e.currentTarget;
+    btn.classList.remove("pop");
+    void btn.offsetWidth;
+    btn.classList.add("pop");
   };
 
   // related products (same category)
@@ -71,9 +75,10 @@ async function loadProduct() {
     .slice(0, 4);
   const grid = document.getElementById("related-grid");
   grid.innerHTML = "";
-  related.forEach((p) => {
+  related.forEach((p, i) => {
     const card = document.createElement("div");
-    card.className = "product-card";
+    card.className = "product-card reveal";
+    card.style.transitionDelay = `${i * 45}ms`;
     const rHasDiscount = p.discountPrice && p.discountPrice < p.price;
     card.innerHTML = `
       <a href="/product.html?id=${p.id}" class="thumb"><img src="${p.image}" alt="${p.name}" /></a>
@@ -83,9 +88,17 @@ async function loadProduct() {
       )}</span></div>
       <button class="add-cart-btn">أضف للسلة 🛒</button>
     `;
-    card.querySelector(".add-cart-btn").addEventListener("click", () => addToCart(p, 1));
+    card.querySelector(".add-cart-btn").addEventListener("click", (e) => {
+      addToCart(p, 1);
+      const btn = e.currentTarget;
+      btn.classList.remove("pop");
+      void btn.offsetWidth;
+      btn.classList.add("pop");
+    });
     grid.appendChild(card);
   });
+
+  initScrollReveal();
 }
 
 loadProduct();

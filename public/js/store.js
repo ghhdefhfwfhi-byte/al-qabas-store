@@ -1,6 +1,6 @@
 // store.js - home page logic (hero slider, categories, product grid + filters)
 
-function productCard(p, categoriesById, brandsById) {
+function productCard(p, categoriesById, brandsById, delayIndex = 0) {
   const brand = p.brandId ? brandsById[p.brandId]?.name : "";
   const hasDiscount = p.discountPrice && p.discountPrice < p.price;
   const shownPrice = hasDiscount ? p.discountPrice : p.price;
@@ -9,7 +9,8 @@ function productCard(p, categoriesById, brandsById) {
     : 0;
 
   const card = document.createElement("div");
-  card.className = "product-card";
+  card.className = "product-card reveal";
+  card.style.transitionDelay = `${Math.min(delayIndex, 8) * 45}ms`;
   card.innerHTML = `
     ${hasDiscount ? `<span class="discount-badge">خصم ${pct}%</span>` : ""}
     <span class="wish-btn">♡</span>
@@ -24,9 +25,13 @@ function productCard(p, categoriesById, brandsById) {
     </div>
     <button class="add-cart-btn">أضف للسلة 🛒</button>
   `;
-  card.querySelector(".add-cart-btn").addEventListener("click", () =>
-    addToCart(p, 1)
-  );
+  card.querySelector(".add-cart-btn").addEventListener("click", (e) => {
+    addToCart(p, 1);
+    const btn = e.currentTarget;
+    btn.classList.remove("pop");
+    void btn.offsetWidth;
+    btn.classList.add("pop");
+  });
   return card;
 }
 
@@ -126,9 +131,12 @@ async function renderProducts() {
     grid.innerHTML = `<div class="empty-state">لا توجد منتجات مطابقة 🙁</div>`;
     return;
   }
-  list.forEach((p) => grid.appendChild(productCard(p, categoriesById, brandsById)));
+  list.forEach((p, i) =>
+    grid.appendChild(productCard(p, categoriesById, brandsById, i))
+  );
 
   renderCategoryStrip(categories);
+  initScrollReveal();
 }
 
 renderHero();

@@ -69,7 +69,44 @@ function showToast(msg) {
 
 function updateCartBadge() {
   const badge = document.getElementById("cart-badge");
-  if (badge) badge.textContent = cartCount();
+  if (!badge) return;
+  badge.textContent = cartCount();
+  badge.classList.remove("bump");
+  // restart the bump animation on every cart change
+  void badge.offsetWidth;
+  badge.classList.add("bump");
+  setTimeout(() => badge.classList.remove("bump"), 260);
+}
+
+// scroll-reveal: fade+rise any element with class="reveal" into view once,
+// used to make sections/cards animate in as the visitor scrolls
+function initScrollReveal(root = document) {
+  const targets = root.querySelectorAll(".reveal:not(.in-view)");
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("in-view"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  targets.forEach((el) => io.observe(el));
+}
+
+// sticky header gains a shadow once the page scrolls
+function initHeaderScrollShadow() {
+  const header = document.getElementById("site-header");
+  if (!header) return;
+  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 4);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
 }
 
 async function api(path, opts = {}) {
@@ -172,4 +209,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderHeader(settings);
   renderFooter(settings);
   await loadNavCategories();
+  initHeaderScrollShadow();
 });

@@ -21,9 +21,10 @@ function renderCart() {
   document.querySelector(".summary-box").style.display = "block";
 
   itemsWrap.innerHTML = "";
-  cart.forEach((item) => {
+  cart.forEach((item, i) => {
     const row = document.createElement("div");
     row.className = "cart-item";
+    row.style.animationDelay = `${Math.min(i, 8) * 45}ms`;
     row.innerHTML = `
       <div class="thumb"><img src="${item.image}" alt="${item.name}" /></div>
       <div class="info">
