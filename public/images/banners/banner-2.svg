@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="300" rx="18" fill="url(#g)"/>
+  <text x="50%" y="126" font-size="96" text-anchor="middle" dominant-baseline="middle">🧴</text>
+  <text x="50%" y="216" font-size="27" font-family="Arial, sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">أحبار أصلية بأفضل الأسعار</text>
+  <text x="50%" y="255" font-size="18" font-family="Arial, sans-serif" fill="#ffffffcc" text-anchor="middle" dominant-baseline="middle">لجميع الماركات العالمية</text>
+</svg>
