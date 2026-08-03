@@ -1,12 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#a16207"/>
-      <stop offset="100%" stop-color="#facc15"/>
+    <linearGradient id="bgpa1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#92400e"/>
+      <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
+    <radialGradient id="glowpa1" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#fde68a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowpa1" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7.199999999999999" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect width="400" height="400" rx="18" fill="url(#g)"/>
-  <text x="50%" y="168" font-size="128" text-anchor="middle" dominant-baseline="middle">📄</text>
-  
-  
+  <rect width="400" height="400" rx="18" fill="url(#bgpa1)"/>
+  <circle cx="200" cy="184" r="136" fill="url(#glowpa1)"/>
+  <g filter="url(#shadowpa1)">
+    
+  <g transform="translate(0,15)">
+    <rect x="-75" y="-70" width="150" height="18" rx="3" fill="#ffffff" stroke="#78350f" stroke-width="3"/>
+    <rect x="-75" y="-52" width="150" height="18" rx="3" fill="#ffffff" stroke="#78350f" stroke-width="3"/>
+    <rect x="-80" y="-32" width="160" height="95" rx="10" fill="#78350f"/>
+    <rect x="-55" y="-10" width="110" height="14" rx="4" fill="#d97706"/>
+    <rect x="-55" y="14" width="70" height="10" rx="4" fill="#ffffff" opacity="0.6"/>
+  </g>
+  </g>
 </svg>

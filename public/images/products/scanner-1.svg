@@ -1,12 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bgsc1" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0e7490"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
+    <radialGradient id="glowsc1" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#a5f3fc" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#a5f3fc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowsc1" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7.199999999999999" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect width="400" height="400" rx="18" fill="url(#g)"/>
-  <text x="50%" y="168" font-size="128" text-anchor="middle" dominant-baseline="middle">📠</text>
-  
-  
+  <rect width="400" height="400" rx="18" fill="url(#bgsc1)"/>
+  <circle cx="200" cy="184" r="136" fill="url(#glowsc1)"/>
+  <g filter="url(#shadowsc1)">
+    
+  <g transform="translate(0,20)">
+    <rect x="-95" y="-15" width="190" height="45" rx="12" fill="#155e75"/>
+    <rect x="-80" y="-2" width="160" height="20" rx="6" fill="#ffffff" opacity="0.9"/>
+    <rect x="-80" y="-40" width="160" height="14" rx="6" fill="#0891b2"/>
+    <circle cx="78" cy="7" r="5" fill="#0891b2"/>
+  </g>
+  </g>
 </svg>

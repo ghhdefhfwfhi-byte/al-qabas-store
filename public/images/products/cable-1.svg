@@ -1,12 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#334155"/>
-      <stop offset="100%" stop-color="#64748b"/>
+    <linearGradient id="bgca1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#475569"/>
     </linearGradient>
+    <radialGradient id="glowca1" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#cbd5e1" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowca1" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7.199999999999999" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect width="400" height="400" rx="18" fill="url(#g)"/>
-  <text x="50%" y="168" font-size="128" text-anchor="middle" dominant-baseline="middle">🔌</text>
-  
-  
+  <rect width="400" height="400" rx="18" fill="url(#bgca1)"/>
+  <circle cx="200" cy="184" r="136" fill="url(#glowca1)"/>
+  <g filter="url(#shadowca1)">
+    
+  <g fill="none" stroke="#0f172a" stroke-width="16" stroke-linecap="round">
+    <path d="M -70 -40 Q 0 -90 70 -40 Q 120 0 70 40 Q 0 90 -70 40 Q -120 0 -70 -40 Z" />
+  </g>
+  <circle cx="-70" cy="-40" r="14" fill="#0f172a"/>
+  <circle cx="70" cy="40" r="14" fill="#0f172a"/>
+  </g>
 </svg>

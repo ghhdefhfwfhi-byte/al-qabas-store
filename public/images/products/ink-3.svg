@@ -1,12 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#312e81"/>
-      <stop offset="100%" stop-color="#6366f1"/>
+    <linearGradient id="bgk3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#4338ca"/>
     </linearGradient>
+    <radialGradient id="glowk3" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowk3" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7.199999999999999" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect width="400" height="400" rx="18" fill="url(#g)"/>
-  <text x="50%" y="168" font-size="128" text-anchor="middle" dominant-baseline="middle">🧴</text>
-  
-  
+  <rect width="400" height="400" rx="18" fill="url(#bgk3)"/>
+  <circle cx="200" cy="184" r="136" fill="url(#glowk3)"/>
+  <g filter="url(#shadowk3)">
+    
+  <g>
+    <rect x="-16" y="-85" width="32" height="24" rx="4" fill="#4338ca"/>
+    <path d="M -14 -61 L 14 -61 L 20 -30 L 45 40 Q 45 70 0 70 Q -45 70 -45 40 L -20 -30 Z" fill="#111827"/>
+    <rect x="-30" y="10" width="60" height="14" rx="4" fill="#ffffff" opacity="0.3"/>
+  </g>
+  </g>
 </svg>
