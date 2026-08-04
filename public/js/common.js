@@ -130,7 +130,7 @@ function renderHeader(settings) {
     </div>
     <div class="header-inner container">
       <a class="logo" href="/index.html">
-        <img src="/images/logo.svg" alt="القبس" />
+        <img src="${settings.logoUrl || "/images/logo.svg"}" alt="${settings.storeName || "القبس"}" />
         <span>${settings.storeName || "القبس"}</span>
       </a>
       <form class="search-box" onsubmit="return doSearch(event)">
