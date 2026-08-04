@@ -241,6 +241,20 @@ table.admin-table tbody tr:hover img.thumb { transform: scale(1.12); }
 }
 .form-field .row2 { display: flex; gap: 10px; }
 .form-field .row2 > div { flex: 1; }
+
+/* ---------- image upload widget ---------- */
+.image-field { display: flex; gap: 12px; align-items: flex-start; }
+.image-field-controls { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.upload-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 12px; border: 1px dashed var(--p1);
+  border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--p1);
+  cursor: pointer; background: #eef2ff; width: fit-content;
+  transition: background 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.upload-btn:hover { background: #e0e7ff; transform: translateY(-1px); }
+.upload-hint { font-size: 11px; color: var(--muted); }
+.upload-status { font-size: 12px; font-weight: 600; color: var(--success); min-height: 14px; }
 .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
 .modal-actions button { flex: 1; padding: 11px; border-radius: 8px; font-weight: 700; border: none; }
 .btn-cancel { background: #f3f4f6; color: var(--text); }
@@ -254,3 +268,38 @@ table.admin-table tbody tr:hover img.thumb { transform: scale(1.12); }
   font-size: 14px; font-weight: 600; opacity: 0; transition: opacity .2s, transform .2s; z-index: 999;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* table on small screens scrolls horizontally instead of breaking the page layout */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+.table-scroll table.admin-table { min-width: 640px; box-shadow: none; }
+
+/* =====================================================================
+   RESPONSIVE / MOBILE
+   ===================================================================== */
+@media (max-width: 720px) {
+  .admin-header { padding: 0 14px; }
+  .admin-header .brand span { display: none; }
+  .admin-tabs { padding: 0 10px; }
+  .admin-tabs button { padding: 12px 10px; font-size: 13px; }
+  .admin-body { padding: 16px; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-card { padding: 14px; }
+  .stat-card .value { font-size: 19px; }
+
+  .panel-toolbar { flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+  .panel-toolbar .btn-primary { width: 100%; }
+
+  .login-box { width: 92vw; padding: 28px 22px; }
+
+  .modal-box { padding: 18px; width: 94vw; }
+  .form-field .row2 { flex-direction: column; gap: 0; }
+
+  /* 16px min font-size on inputs prevents iOS Safari from auto-zooming in */
+  .form-field input, .form-field select, .form-field textarea,
+  .login-box input { font-size: 16px; }
+}
+
+@media (max-width: 420px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
