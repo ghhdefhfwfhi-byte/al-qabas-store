@@ -10,7 +10,20 @@ const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_PATH = path.join(__dirname, "db.json");
+
+// Where the JSON "database" actually lives. On Railway, DB_PATH points at
+// the persistent Volume (same one used for UPLOAD_DIR) so every admin edit
+// (products, categories, settings, logo, orders...) survives redeploys and
+// container restarts instead of resetting to whatever's baked into the git
+// repo. Locally (no DB_PATH set) it just uses the db.json shipped in the
+// project, same as before.
+const SEED_DB_PATH = path.join(__dirname, "db.json");
+const DB_PATH = process.env.DB_PATH || SEED_DB_PATH;
+if (DB_PATH !== SEED_DB_PATH && !fs.existsSync(DB_PATH)) {
+  // first boot with a fresh volume: seed it from the repo's starter data
+  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+  fs.copyFileSync(SEED_DB_PATH, DB_PATH);
+}
 
 // Where uploaded images are stored. On Railway a persistent Volume is
 // mounted and UPLOAD_DIR points at it (env var) so uploads survive
@@ -19,7 +32,25 @@ const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "public/images
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+
+// Railway's edge CDN caches static assets (css/js/html) for up to 2 hours
+// by default even though our server sends no cache headers at all — so a
+// deploy that changes style.css/admin.js/etc. can keep serving the OLD
+// cached copy from the edge for hours after the new code is live. Telling
+// the browser/CDN explicitly not to store these defeats that: every request
+// always reaches this server and gets the current file. Uploaded product/
+// category/logo images use random per-upload filenames, so they're safe to
+// let cache normally (better performance, and a new upload is a new URL
+// anyway).
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, filePath) => {
+      if (/\.(html?|css|js)$/i.test(filePath)) {
+        res.setHeader("Cache-Control", "no-store");
+      }
+    },
+  })
+);
 // serve uploads even when UPLOAD_DIR lives outside /public (e.g. a mounted volume)
 app.use("/images/uploads", express.static(UPLOAD_DIR));
 
