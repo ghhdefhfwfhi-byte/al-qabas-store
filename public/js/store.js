@@ -86,7 +86,11 @@ async function renderCategoryStrip(categories) {
       const a = document.createElement("a");
       a.className = "cat-item";
       a.href = `/index.html?cat=${c.id}`;
-      a.innerHTML = `<span class="cat-icon">${c.icon}</span><span>${c.name}</span>`;
+      const iconHtml = /^(\/|https?:\/\/)/.test(c.icon || "")
+        ? `<img src="${c.icon}" alt="" style="width:26px;height:26px;object-fit:contain;" />`
+        : c.icon || "";
+      a.innerHTML = `<span class="cat-icon">${iconHtml}</span><span></span>`;
+      a.querySelector("span:last-child").textContent = c.name;
       wrap.appendChild(a);
     });
 }
