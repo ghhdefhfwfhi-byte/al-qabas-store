@@ -49,6 +49,39 @@ async function api(path, opts = {}) {
   return res.json();
 }
 
+// uploads a single image file to /api/upload and returns its public URL —
+// separate from api() because file uploads use multipart/form-data, not JSON
+async function uploadImage(file) {
+  const fd = new FormData();
+  fd.append("image", file);
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    headers: { "x-admin-token": localStorage.getItem(TOKEN_KEY) || "" },
+    body: fd,
+  });
+  if (res.status === 401) {
+    localStorage.removeItem(TOKEN_KEY);
+    location.reload();
+    throw new Error("انتهت الجلسة");
+  }
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "فشل رفع الصورة");
+  }
+  const data = await res.json();
+  return data.url;
+}
+
+// renders an emoji/text icon as-is, but if the value looks like an uploaded
+// image path/URL it renders an <img> instead (categories.icon can be either)
+function iconOrImg(value, size) {
+  const v = value || "";
+  if (/^(\/|https?:\/\/)/.test(v)) {
+    return `<img src="${esc(v)}" style="width:${size}px;height:${size}px;object-fit:contain;vertical-align:middle;border-radius:6px;" />`;
+  }
+  return `<span style="font-size:${size}px">${esc(v)}</span>`;
+}
+
 function showToast(msg) {
   let el = document.getElementById("toast");
   if (!el) {
@@ -171,7 +204,7 @@ const CONFIGS = {
       { key: "price", label: "السعر (د.ع)", type: "number", required: true },
       { key: "discountPrice", label: "السعر بعد الخصم (اختياري)", type: "number" },
       { key: "stock", label: "الكمية بالمخزون", type: "number" },
-      { key: "image", label: "رابط الصورة", type: "text", placeholder: "/images/products/laser-1.svg" },
+      { key: "image", label: "صورة المنتج", type: "image" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "active", label: "مفعّل بالمتجر", type: "checkbox" },
     ],
@@ -195,11 +228,11 @@ const CONFIGS = {
     columns: ["الأيقونة", "الاسم", "الترتيب", "الإجراءات"],
     fields: [
       { key: "name", label: "اسم الفئة", type: "text", required: true },
-      { key: "icon", label: "أيقونة (إيموجي)", type: "text", placeholder: "🖨️" },
+      { key: "icon", label: "أيقونة (إيموجي أو صورة)", type: "icon-or-image", placeholder: "🖨️" },
       { key: "order", label: "الترتيب", type: "number" },
     ],
     row(c) {
-      return [`<span style="font-size:20px">${esc(c.icon || "")}</span>`, `<strong>${esc(c.name)}</strong>`, c.order ?? "-"];
+      return [iconOrImg(c.icon, 26), `<strong>${esc(c.name)}</strong>`, c.order ?? "-"];
     },
     defaults: { order: 1 },
   },
@@ -209,7 +242,7 @@ const CONFIGS = {
     columns: ["الشعار", "الاسم", "الترتيب", "الإجراءات"],
     fields: [
       { key: "name", label: "اسم العلامة", type: "text", required: true },
-      { key: "logo", label: "رابط الشعار", type: "text", placeholder: "/images/brands/hp.svg" },
+      { key: "logo", label: "شعار العلامة", type: "image" },
       { key: "order", label: "الترتيب", type: "number" },
     ],
     row(b) {
@@ -225,7 +258,7 @@ const CONFIGS = {
       { key: "title", label: "العنوان", type: "text", required: true },
       { key: "subtitle", label: "العنوان الفرعي", type: "text" },
       { key: "type", label: "النوع", type: "select", options: ["Slider", "Single", "List"] },
-      { key: "image", label: "رابط الصورة", type: "text", placeholder: "/images/banners/banner-1.svg" },
+      { key: "image", label: "صورة البانر", type: "image" },
       { key: "link", label: "رابط عند الضغط (اختياري)", type: "text" },
       { key: "order", label: "الترتيب", type: "number" },
       { key: "active", label: "مفعّل", type: "checkbox" },
@@ -269,10 +302,12 @@ async function renderEntity(key) {
       <h2 style="margin:0">${cfg.title}</h2>
       <button class="btn-primary" id="add-btn">${cfg.addLabel}</button>
     </div>
+    <div class="table-scroll">
     <table class="admin-table">
       <thead><tr>${cfg.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
       <tbody id="table-body"></tbody>
     </table>
+    </div>
   `;
   document.getElementById("add-btn").onclick = () => openEntityModal(key, null);
 
@@ -327,6 +362,30 @@ function fieldInput(f, value) {
       (b) => `<option value="${b.id}" ${b.id === value ? "selected" : ""}>${b.name}</option>`
     ).join("")}</select>`;
   }
+  if (f.type === "image" || f.type === "icon-or-image") {
+    const isImg = /^(\/|https?:\/\/)/.test(v);
+    const previewHtml = isImg
+      ? `<img id="preview-${f.key}" src="${esc(v)}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;background:#f3f4f6;border:1px solid var(--border);" onerror="this.style.opacity=.2" />`
+      : `<span id="preview-${f.key}" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:8px;background:#f3f4f6;border:1px solid var(--border);">${esc(v) || "—"}</span>`;
+    const hint = f.type === "icon-or-image" ? "اكتب إيموجي أو ارفع صورة" : "";
+    return `
+      <div class="image-field" data-image-field="${f.key}">
+        ${previewHtml}
+        <div class="image-field-controls">
+          <label class="upload-btn">
+            📷 اختر صورة
+            <input type="file" accept="image/*" data-upload-for="${f.key}" style="display:none" />
+          </label>
+          ${
+            f.type === "icon-or-image"
+              ? `<input type="text" data-key="${f.key}" value="${esc(v)}" placeholder="${f.placeholder || ""}" style="margin-top:6px" />`
+              : `<input type="hidden" data-key="${f.key}" value="${esc(v)}" />`
+          }
+          <span class="upload-hint">${hint}</span>
+          <span class="upload-status" data-upload-status="${f.key}"></span>
+        </div>
+      </div>`;
+  }
   return `<input type="${f.type}" data-key="${f.key}" value="${v}" placeholder="${f.placeholder || ""}" />`;
 }
 
@@ -356,6 +415,38 @@ function openEntityModal(key, item) {
   `;
   overlay.classList.remove("hidden");
   document.getElementById("modal-cancel").onclick = () => overlay.classList.add("hidden");
+
+  // wire up every image-upload widget in this modal
+  box.querySelectorAll("[data-upload-for]").forEach((fileInput) => {
+    const key = fileInput.dataset.uploadFor;
+    fileInput.addEventListener("change", async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      const statusEl = box.querySelector(`[data-upload-status="${key}"]`);
+      const valueEl = box.querySelector(`[data-key="${key}"]`);
+      const previewEl = box.querySelector(`#preview-${key}`);
+      if (statusEl) statusEl.textContent = "⏳ جاري الرفع...";
+      try {
+        const url = await uploadImage(file);
+        if (valueEl) valueEl.value = url;
+        if (previewEl) {
+          if (previewEl.tagName === "IMG") {
+            previewEl.src = url;
+          } else {
+            const img = document.createElement("img");
+            img.id = previewEl.id;
+            img.src = url;
+            img.style.cssText = "width:56px;height:56px;object-fit:contain;border-radius:8px;background:#f3f4f6;border:1px solid var(--border);";
+            previewEl.replaceWith(img);
+          }
+        }
+        if (statusEl) statusEl.textContent = "✅ تم الرفع";
+      } catch (err) {
+        if (statusEl) statusEl.textContent = "";
+        alert(err.message);
+      }
+    });
+  });
 
   document.getElementById("modal-save").onclick = async () => {
     const payload = { ...data };
@@ -400,12 +491,14 @@ async function renderOrders() {
   const body = document.getElementById("admin-body");
   body.innerHTML = `
     <div class="panel-toolbar"><h2 style="margin:0">الطلبات</h2></div>
+    <div class="table-scroll">
     <table class="admin-table">
       <thead><tr>
         <th>#</th><th>الزبون</th><th>الهاتف</th><th>العنوان</th><th>المنتجات</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>الإجراءات</th>
       </tr></thead>
       <tbody id="table-body"></tbody>
     </table>
+    </div>
   `;
   const tbody = document.getElementById("table-body");
   if (!orders.length) {
@@ -456,10 +549,12 @@ async function renderCustomers() {
   const body = document.getElementById("admin-body");
   body.innerHTML = `
     <div class="panel-toolbar"><h2 style="margin:0">الزبائن</h2></div>
+    <div class="table-scroll">
     <table class="admin-table">
       <thead><tr><th>الاسم</th><th>الهاتف</th><th>عدد الطلبات</th><th>تاريخ الانضمام</th></tr></thead>
       <tbody id="table-body"></tbody>
     </table>
+    </div>
   `;
   const tbody = document.getElementById("table-body");
   if (!customers.length) {
@@ -480,6 +575,17 @@ async function renderSettings() {
   body.innerHTML = `
     <div class="panel-toolbar"><h2 style="margin:0">الإعدادات العامة</h2></div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px;max-width:560px;">
+      <div class="form-field">
+        <label>شعار المتجر (Logo)</label>
+        <div class="image-field">
+          <img id="preview-logoUrl" src="${esc(s.logoUrl || "/images/logo.svg")}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;background:#f3f4f6;border:1px solid var(--border);" onerror="this.style.opacity=.2" />
+          <div class="image-field-controls">
+            <label class="upload-btn">📷 غيّر الشعار<input type="file" accept="image/*" id="s-logo-file" style="display:none" /></label>
+            <input type="hidden" id="s-logoUrl" value="${esc(s.logoUrl || "/images/logo.svg")}" />
+            <span class="upload-status" id="s-logo-status"></span>
+          </div>
+        </div>
+      </div>
       <div class="form-field"><label>اسم المتجر</label><input id="s-storeName" value="${s.storeName || ""}" /></div>
       <div class="form-field"><label>رقم الهاتف</label><input id="s-phone" value="${s.phone || ""}" /></div>
       <div class="form-field"><label>العنوان</label><input id="s-address" value="${s.address || ""}" /></div>
@@ -493,8 +599,25 @@ async function renderSettings() {
       <button class="btn-primary" id="save-settings">حفظ التغييرات 💾</button>
     </div>
   `;
+  document.getElementById("s-logo-file").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const statusEl = document.getElementById("s-logo-status");
+    statusEl.textContent = "⏳ جاري الرفع...";
+    try {
+      const url = await uploadImage(file);
+      document.getElementById("s-logoUrl").value = url;
+      document.getElementById("preview-logoUrl").src = url;
+      statusEl.textContent = "✅ تم الرفع — اضغط حفظ التغييرات لتثبيته";
+    } catch (err) {
+      statusEl.textContent = "";
+      alert(err.message);
+    }
+  });
+
   document.getElementById("save-settings").onclick = async () => {
     const payload = {
+      logoUrl: document.getElementById("s-logoUrl").value,
       storeName: document.getElementById("s-storeName").value,
       phone: document.getElementById("s-phone").value,
       address: document.getElementById("s-address").value,
@@ -505,6 +628,9 @@ async function renderSettings() {
       shippingLarge: Number(document.getElementById("s-shippingLarge").value) || 0,
     };
     await api("/api/settings", { method: "PUT", body: JSON.stringify(payload) });
+    document.querySelectorAll("#login-logo, #admin-logo").forEach((img) => {
+      img.src = payload.logoUrl || "/images/logo.svg";
+    });
     showToast("تم حفظ الإعدادات ✅");
   };
 }
@@ -513,6 +639,21 @@ async function renderSettings() {
 document.getElementById("modal-overlay").addEventListener("click", (e) => {
   if (e.target.id === "modal-overlay") e.target.classList.add("hidden");
 });
+
+// show the store's own logo (if set) on the login screen + admin header,
+// regardless of login state
+(async () => {
+  try {
+    const s = await api("/api/settings");
+    if (s.logoUrl) {
+      document.querySelectorAll("#login-logo, #admin-logo").forEach((img) => {
+        img.src = s.logoUrl;
+      });
+    }
+  } catch {
+    // non-fatal — default static logo stays
+  }
+})();
 
 if (localStorage.getItem(TOKEN_KEY)) {
   boot();
