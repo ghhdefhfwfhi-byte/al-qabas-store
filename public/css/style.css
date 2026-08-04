@@ -481,3 +481,60 @@ a, button { transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease
   pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* =====================================================================
+   RESPONSIVE / MOBILE
+   ===================================================================== */
+@media (max-width: 720px) {
+  .container { padding: 0 14px; }
+
+  /* header: logo + cart on one row, search on its own row below */
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  .logo { font-size: 18px; }
+  .logo img { width: 34px; height: 34px; }
+  .search-box { order: 3; flex-basis: 100%; width: 100%; }
+  .header-actions { gap: 14px; font-size: 12px; }
+
+  .topbar .container { flex-wrap: wrap; gap: 2px; height: auto; padding: 6px 14px; font-size: 11px; }
+
+  .main-nav .container { gap: 16px; font-size: 13px; }
+
+  .category-strip { padding: 12px 0; }
+  .cat-item { min-width: 66px; font-size: 11px; }
+  .cat-item .cat-icon { width: 48px; height: 48px; font-size: 20px; }
+
+  .hero-slide img { max-height: 220px; object-fit: cover; }
+
+  .section { margin: 24px 0; }
+  .section-head h2 { font-size: 17px; }
+
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .product-card { padding: 10px; }
+  .product-card .name { font-size: 13px; min-height: 34px; }
+  .product-card .price { font-size: 14px; }
+
+  .product-detail { grid-template-columns: 1fr; padding: 16px; gap: 18px; }
+  .pd-title { font-size: 19px; }
+  .pd-price { font-size: 22px; }
+  .pd-add-btn { width: 100%; }
+
+  .cart-page { grid-template-columns: 1fr; }
+  .cart-item { flex-wrap: wrap; }
+  .cart-item .qty-row { order: 3; flex-basis: 100%; justify-content: flex-start; margin-top: 8px; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .site-footer { padding: 30px 0 16px; }
+
+  /* 16px min font-size on inputs prevents iOS Safari from auto-zooming in */
+  .form-field input, .form-field textarea, .form-field select { font-size: 16px; }
+}
+
+@media (max-width: 420px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .header-actions .icon-link span:not(.cart-badge) { display: none; }
+}
