@@ -9,7 +9,8 @@
     "shippingMedium": 5000,
     "shippingLarge": 8000,
     "deliveryTimeLabel": "خلال 24 ساعة",
-    "currency": "د.ع"
+    "currency": "د.ع",
+    "logoUrl": "/images/logo.svg"
   },
   "admin": {
     "username": "admin",

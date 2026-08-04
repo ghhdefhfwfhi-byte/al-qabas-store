@@ -5,13 +5,23 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
+const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, "db.json");
 
+// Where uploaded images are stored. On Railway a persistent Volume is
+// mounted and UPLOAD_DIR points at it (env var) so uploads survive
+// redeploys; locally it just falls back to public/images/uploads.
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "public/images/uploads");
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+// serve uploads even when UPLOAD_DIR lives outside /public (e.g. a mounted volume)
+app.use("/images/uploads", express.static(UPLOAD_DIR));
 
 // ---------- tiny JSON "database" helpers ----------
 function readDB() {
@@ -37,6 +47,40 @@ function requireAdmin(req, res, next) {
   if (req.header("x-admin-token") === ADMIN_TOKEN) return next();
   res.status(401).json({ error: "غير مصرح — الرجاء تسجيل الدخول" });
 }
+
+// ---------- image upload (products, categories, brands, banners, logo) ----------
+const ALLOWED_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/svg+xml",
+  "image/gif",
+]);
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase() || ".jpg";
+      const safeExt = /^\.[a-z0-9]{1,5}$/.test(ext) ? ext : ".jpg";
+      cb(null, `${Date.now()}-${crypto.randomBytes(6).toString("hex")}${safeExt}`);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (!ALLOWED_IMAGE_TYPES.has(file.mimetype)) {
+      return cb(new Error("نوع الملف غير مدعوم — استخدم JPG, PNG, WEBP, GIF أو SVG"));
+    }
+    cb(null, true);
+  },
+});
+
+app.post("/api/upload", requireAdmin, (req, res) => {
+  upload.single("image")(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message || "فشل رفع الصورة" });
+    if (!req.file) return res.status(400).json({ error: "لم يتم اختيار صورة" });
+    res.status(201).json({ url: `/images/uploads/${req.file.filename}` });
+  });
+});
 
 // ---------- generic CRUD factory for simple collections ----------
 function crud(collectionName) {
